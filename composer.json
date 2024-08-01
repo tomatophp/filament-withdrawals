@@ -1,0 +1,41 @@
+{
+    "name": "tomatophp/filament-withdrawals",
+    "type": "library",
+    "description": "Manage your withdrawals in Filament",
+    "keywords": [
+        "php",
+        "laravel",
+        "wallet",
+        "wwithdrawals"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TomatoPHP\\FilamentWithdrawals\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TomatoPHP\\FilamentWithdrawals\\FilamentWithdrawalsServiceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "Abdelmjid Saber",
+            "email": "AbdelmjidDev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2",
+        "filament/filament": "^3.0.0",
+        "tomatophp/filament-wallet": "^v1.0.3",
+        "tomatophp/console-helpers": "^1.1"
+    }
+}
