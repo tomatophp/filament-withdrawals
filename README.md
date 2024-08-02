@@ -1,8 +1,10 @@
+![Screenshot](https://raw.githubusercontent.com/tomatophp/filament-withdrawals/master/arts/megoxv-tomato-withdrawals.jpg)
+
 # Filament Withdrawals
 
-[![Latest Stable Version](https://poser.pugx.org/TomatoPHP/filament-withdrawals/version.svg)](https://packagist.org/packages/TomatoPHP/filament-withdrawals)
-[![License](https://poser.pugx.org/TomatoPHP/filament-withdrawals/license.svg)](https://packagist.org/packages/TomatoPHP/filament-withdrawals)
-[![Downloads](https://poser.pugx.org/TomatoPHP/filament-withdrawals/d/total.svg)](https://packagist.org/packages/TomatoPHP/filament-withdrawals)
+[![Latest Stable Version](https://poser.pugx.org/tomatophp/filament-withdrawals/version.svg)](https://packagist.org/packages/tomatophp/filament-withdrawals)
+[![License](https://poser.pugx.org/tomatophp/filament-withdrawals/license.svg)](https://packagist.org/packages/tomatophp/filament-withdrawals)
+[![Downloads](https://poser.pugx.org/tomatophp/filament-withdrawals/d/total.svg)](https://packagist.org/packages/tomatophp/filament-withdrawals)
 
 Manage your withdrawals in Filament
 
@@ -11,6 +13,7 @@ Manage your withdrawals in Filament
 ```bash
 composer require tomatophp/filament-withdrawals
 ```
+
 after install your package please run this command
 
 ```bash
@@ -25,18 +28,6 @@ finally register the plugin on `/app/Providers/Filament/AdminPanelProvider.php`
 
 ## Publish Assets
 
-you can publish config file by use this command
-
-```bash
-php artisan vendor:publish --tag="filament-withdrawals-config"
-```
-
-you can publish views file by use this command
-
-```bash
-php artisan vendor:publish --tag="filament-withdrawals-views"
-```
-
 you can publish languages file by use this command
 
 ```bash
@@ -48,6 +39,15 @@ you can publish migrations file by use this command
 ```bash
 php artisan vendor:publish --tag="filament-withdrawals-migrations"
 ```
+
+
+## Support
+
+you can join our discord server to get support [TomatoPHP](https://discord.gg/vKV9U7gD3c)
+
+## Docs
+
+you can check docs of this package on [Docs](https://docs.tomatophp.com/filament/filament-withdrawals)
 
 ## Changelog
 

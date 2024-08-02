@@ -30,13 +30,6 @@ class FilamentWithdrawalsServiceProvider extends ServiceProvider
          \TomatoPHP\FilamentWithdrawals\Console\FilamentWithdrawalsInstall::class,
       ]);
 
-      //Register Config file
-      $this->mergeConfigFrom(__DIR__ . '/../config/filament-withdrawals.php', 'filament-withdrawals');
-
-      //Publish Config
-      $this->publishes([
-         __DIR__ . '/../config/filament-withdrawals.php' => config_path('filament-withdrawals.php'),
-      ], 'filament-withdrawals-config');
 
       //Register Migrations
       $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
@@ -45,13 +38,6 @@ class FilamentWithdrawalsServiceProvider extends ServiceProvider
       $this->publishes([
          __DIR__ . '/../database/migrations' => database_path('migrations'),
       ], 'filament-withdrawals-migrations');
-      //Register views
-      $this->loadViewsFrom(__DIR__ . '/../resources/views', 'filament-withdrawals');
-
-      //Publish Views
-      $this->publishes([
-         __DIR__ . '/../resources/views' => resource_path('views/vendor/filament-withdrawals'),
-      ], 'filament-withdrawals-views');
 
       //Register Langs
       $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'filament-withdrawals');
@@ -61,8 +47,6 @@ class FilamentWithdrawalsServiceProvider extends ServiceProvider
          __DIR__ . '/../resources/lang' => base_path('lang/vendor/filament-withdrawals'),
       ], 'filament-withdrawals-lang');
 
-      //Register Routes
-      $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
    }
 
    public function boot(): void
