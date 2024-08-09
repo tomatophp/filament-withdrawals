@@ -3,18 +3,14 @@
 namespace TomatoPHP\FilamentWithdrawals\Filament\Resources;
 
 use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\Pages;
-use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\RelationManagers;
 use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\RelationManagers\WithdrawalMethodFieldsRelation;
 use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\RelationManagers\WithdrawalRequestsRelation;
 use TomatoPHP\FilamentWithdrawals\Models\WithdrawalMethod;
 use Filament\Forms;
-use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WithdrawalMethodResource extends Resource
 {

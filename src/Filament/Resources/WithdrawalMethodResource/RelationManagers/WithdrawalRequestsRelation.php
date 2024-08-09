@@ -4,11 +4,9 @@ namespace TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResou
 
 use TomatoPHP\FilamentWithdrawals\Models\WithdrawalRequest;
 use Filament\Forms\Form;
-use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Infolists\Components\KeyValueEntry;
-use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
@@ -17,8 +15,6 @@ use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Number;
-use Illuminate\Support\Str;
-use TomatoPHP\FilamentCms\Models\FormRequest;
 
 class WithdrawalRequestsRelation extends RelationManager
 {

@@ -3,14 +3,11 @@
 namespace TomatoPHP\FilamentWithdrawals\Filament\Resources;
 
 use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource\Pages;
-use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource\RelationManagers;
 use TomatoPHP\FilamentWithdrawals\Models\WithdrawalRequest;
 use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
-// use Filament\Infolists\Components\Actions;
-// use Filament\Infolists\Components\Actions\Action;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -18,8 +15,6 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Number;
 
 class WithdrawalRequestResource extends Resource

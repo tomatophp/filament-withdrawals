@@ -26,6 +26,15 @@ finally register the plugin on `/app/Providers/Filament/AdminPanelProvider.php`
 ->plugin(\TomatoPHP\FilamentWithdrawals\FilamentWithdrawalsPlugin::make())
 ```
 
+## Screenshots
+
+![Withdrawal Methods](https://raw.githubusercontent.com/tomatophp/filament-withdrawals/master/arts/withdrawal-methods.png)
+![Withdrawal Methods Fields](https://raw.githubusercontent.com/tomatophp/filament-withdrawals/master/arts/withdrawal-methods-fields.png)
+![Withdrawal Methods Requests](https://raw.githubusercontent.com/tomatophp/filament-withdrawals/master/arts/withdrawal-methods-requests.png)
+![Withdrawal Requests](https://raw.githubusercontent.com/tomatophp/filament-withdrawals/master/arts/withdrawal-requests.png)
+![Withdrawal Requests View](https://raw.githubusercontent.com/tomatophp/filament-withdrawals/master/arts/withdrawal-requests-view.png)
+![Withdrawal Requests Edit](https://raw.githubusercontent.com/tomatophp/filament-withdrawals/master/arts/withdrawal-requests-edit.png)
+
 ## Add Form Field Type
 
 you can add more fields to the form builder by use this method on your provider.

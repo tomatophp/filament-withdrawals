@@ -2,8 +2,8 @@
 
 namespace TomatoPHP\FilamentWithdrawals\Services;
 
-use TomatoPHP\FilamentWithdrawals\Models\Account;
-use TomatoPHP\FilamentWithdrawals\Models\User;
+use App\Models\Account;
+use App\Models\User;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Str;
