@@ -156,9 +156,9 @@ class FilamentWithdrawalFormBuilder
         // Check if user is authenticated and validate wallet balance
         if (auth('accounts')->check()) {
             $user = auth('accounts')->user();
-            $wallet = $user->getWallet();
+            $wallet = $user->wallet;
 
-            if ($amount > $wallet->balanceFloatNum) {
+            if ($amount > $wallet->balance) {
                 Notification::make()
                     ->title(trans('filament-withdrawals::messages.withdrawal_requests.notification.balance_is_not_enough.title'))
                     ->body(trans('filament-withdrawals::messages.withdrawal_requests.notification.balance_is_not_enough.body'))
