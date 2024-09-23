@@ -1,0 +1,29 @@
+{
+    "name": "FilamentWithdrawals",
+    "alias": "filament-withdrawals",
+    "description": {
+        "ar": "Manage your wallet withdrawals in FilamentPHP",
+        "en": "Manage your wallet withdrawals in FilamentPHP",
+        "gr": "Manage your wallet withdrawals in FilamentPHP",
+        "sp": "Manage your wallet withdrawals in FilamentPHP"
+    },
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "TomatoPHP\\FilamentWithdrawals\\FilamentWithdrawalsServiceProvider"
+    ],
+    "files": [],
+    "title": {
+        "ar": "Wallets Withdrawals",
+        "en": "Wallets Withdrawals",
+        "gr": "Wallets Withdrawals",
+        "sp": "Wallets Withdrawals"
+    },
+    "color": "#007dff",
+    "icon": "heroicon-c-arrow-uturn-up",
+    "placeholder": "https://raw.githubusercontent.com/tomatophp/filament-withdrawals/master/arts/megoxv-tomato-withdrawals.jpg",
+    "type": "plugin",
+    "version": "v1.0.2",
+    "github" : "https://github.com/tomatophp/filament-withdrawals",
+    "docs" : "https://github.com/tomatophp/filament-withdrawals"
+}
