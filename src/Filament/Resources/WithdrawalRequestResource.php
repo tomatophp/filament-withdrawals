@@ -70,8 +70,8 @@ class WithdrawalRequestResource extends Resource
                             $wallet = $user->wallet;
 
                             // Perform withdrawal
-                            if ($wallet->balance >= $record->amount) {
-                                $wallet->withdraw($record->amount);
+                            if ($wallet->balanceFloatNum >= $record->amount) {
+                                $wallet->withdrawFloat($record->amount);
 
                                 // Update status
                                 $record->status = 'completed';

@@ -158,7 +158,7 @@ class FilamentWithdrawalFormBuilder
             $user = auth('accounts')->user();
             $wallet = $user->wallet;
 
-            if ($amount > $wallet->balance) {
+            if ($amount > $wallet->balanceFloatNum) {
                 Notification::make()
                     ->title(trans('filament-withdrawals::messages.withdrawal_requests.notification.balance_is_not_enough.title'))
                     ->body(trans('filament-withdrawals::messages.withdrawal_requests.notification.balance_is_not_enough.body'))
