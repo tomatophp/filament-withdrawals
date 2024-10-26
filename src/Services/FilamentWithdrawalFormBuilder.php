@@ -108,7 +108,7 @@ class FilamentWithdrawalFormBuilder
 
             // Ensure 'amount' field is always present
             $amountFieldBuild = TextInput::make('amount');
-            $amountFieldBuild->label('Amount');
+            $amountFieldBuild->label(trans('filament-withdrawals::messages.forms.requests.columns.amount'));
             $amountFieldBuild->numeric();
             $amountFieldBuild->default(0.00);
             $amountFieldBuild->minValue(1);
