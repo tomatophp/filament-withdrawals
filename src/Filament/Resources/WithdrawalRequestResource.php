@@ -16,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Number;
+use TomatoPHP\FilamentAccounts\Components\AccountColumn;
 
 class WithdrawalRequestResource extends Resource
 {
@@ -129,13 +130,13 @@ class WithdrawalRequestResource extends Resource
                 ->label(trans('filament-withdrawals::messages.forms.requests.columns.date')),
             TextEntry::make('amount')
                 ->label(trans('filament-withdrawals::messages.forms.requests.columns.amount'))
-                ->money('USD'),
+                ->money(setting('site_currency')),
             TextEntry::make('currency')
                 ->label(trans('filament-withdrawals::messages.forms.requests.columns.currency'))
-                ->money('USD'),
+                ->money(setting('site_currency')),
             TextEntry::make('rate')
                 ->label(trans('filament-withdrawals::messages.forms.requests.columns.rate'))
-                ->money('USD'),
+                ->money(setting('site_currency')),
             TextEntry::make('amount')
                 ->label(trans('filament-withdrawals::messages.forms.requests.columns.final_amount'))
                 ->formatStateUsing(function (WithdrawalRequest $record) {
@@ -165,24 +166,37 @@ class WithdrawalRequestResource extends Resource
     {
         return $table
             ->columns([
+                AccountColumn::make('model.id')
+                    ->label(trans('filament-accounts::messages.accounts.coulmns.id')),
+                Tables\Columns\TextColumn::make('model.name')
+                    ->label(trans('filament-accounts::messages.accounts.coulmns.name'))
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('model.teams.name')
+                    ->badge()
+                    ->icon('heroicon-o-user-group')
+                    ->label(trans('filament-accounts::messages.accounts.coulmns.teams'))
+                    ->toggleable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label(trans('filament-withdrawals::messages.forms.requests.columns.status'))
                     ->badge()
-                    ->state(fn ($record) => match ($record->status) {
+                    ->state(fn($record) => match ($record->status) {
                         "pending" => trans('filament-withdrawals::messages.forms.requests.columns.pending'),
                         "processing" => trans('filament-withdrawals::messages.forms.requests.columns.processing'),
                         "completed" => trans('filament-withdrawals::messages.forms.requests.columns.completed'),
                         "cancelled" => trans('filament-withdrawals::messages.forms.requests.columns.cancelled'),
                         default => $record->status,
                     })
-                    ->icon(fn ($record) => match ($record->status) {
+                    ->icon(fn($record) => match ($record->status) {
                         'pending' => 'heroicon-s-rectangle-stack',
                         'processing' => 'heroicon-s-arrow-path',
                         'completed' => 'heroicon-s-check-circle',
                         'cancelled' => 'heroicon-s-x-circle',
                         default => 'heroicon-s-x-circle',
                     })
-                    ->color(fn ($record) => match ($record->status) {
+                    ->color(fn($record) => match ($record->status) {
                         'pending' => 'info',
                         'processing' => 'warning',
                         'completed' => 'success',
