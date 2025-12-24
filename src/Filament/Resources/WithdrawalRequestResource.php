@@ -4,15 +4,14 @@ namespace TomatoPHP\FilamentWithdrawals\Filament\Resources;
 
 use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource\Pages;
 use TomatoPHP\FilamentWithdrawals\Models\WithdrawalRequest;
-use Filament\Forms;
-use Filament\Forms\Components\Actions;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Filament;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Number;
@@ -22,7 +21,7 @@ class WithdrawalRequestResource extends Resource
 {
     protected static ?string $model = WithdrawalRequest::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-inbox-stack';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-s-inbox-stack';
 
     protected static ?int $navigationSort = 5;
 
@@ -46,7 +45,7 @@ class WithdrawalRequestResource extends Resource
         return trans('filament-withdrawals::messages.withdrawal_requests.title');
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -114,7 +113,7 @@ class WithdrawalRequestResource extends Resource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $infolist): Schema
     {
         return $infolist->schema([
             TextEntry::make('description')
@@ -167,16 +166,16 @@ class WithdrawalRequestResource extends Resource
         return $table
             ->columns([
                 AccountColumn::make('model.id')
-                    ->label(trans('filament-accounts::messages.accounts.coulmns.id')),
+                    ->label(trans('filament-withdrawals::messages.withdrawal_requests.columns.account_id')),
                 Tables\Columns\TextColumn::make('model.name')
-                    ->label(trans('filament-accounts::messages.accounts.coulmns.name'))
+                    ->label(trans('filament-withdrawals::messages.withdrawal_requests.columns.account_name'))
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('model.teams.name')
                     ->badge()
                     ->icon('heroicon-o-user-group')
-                    ->label(trans('filament-accounts::messages.accounts.coulmns.teams'))
+                    ->label(trans('filament-withdrawals::messages.withdrawal_requests.columns.teams'))
                     ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
@@ -235,14 +234,14 @@ class WithdrawalRequestResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()
+                Filament\Actions\ViewAction::make(),
+                Filament\Actions\EditAction::make()
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Filament\Actions\BulkActionGroup::make([
+                    Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

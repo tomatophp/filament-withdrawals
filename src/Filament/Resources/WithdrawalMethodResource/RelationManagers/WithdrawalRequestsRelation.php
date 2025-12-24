@@ -3,14 +3,14 @@
 namespace TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\RelationManagers;
 
 use TomatoPHP\FilamentWithdrawals\Models\WithdrawalRequest;
-use Filament\Forms\Form;
-use Filament\Forms\Components\Actions;
-use Filament\Forms\Components\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
+use Filament;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Model;
@@ -50,7 +50,7 @@ class WithdrawalRequestsRelation extends RelationManager
     }
 
 
-    public function form(Form $form): Form
+    public function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -118,7 +118,7 @@ class WithdrawalRequestsRelation extends RelationManager
             ]);
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $infolist): Schema
     {
         return $infolist->schema([
             TextEntry::make('description')
@@ -229,14 +229,14 @@ class WithdrawalRequestsRelation extends RelationManager
                 Tables\Grouping\Group::make('status')
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()
+                Filament\Actions\ViewAction::make(),
+                Filament\Actions\EditAction::make()
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Filament\Actions\BulkActionGroup::make([
+                    Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

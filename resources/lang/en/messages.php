@@ -20,11 +20,17 @@ return [
     "withdrawal_requests" => [
         "title" => "Withdrawal Requests",
         "single" => "Withdrawal Request",
+        "create" => "New Withdrawal Request",
+        "select" => "Select Withdrawal Method",
+        "informations" => "Withdrawal Information",
         "columns" => [
             "process" => "Process",
             "completed" => "Completed",
             "cancelled" => "Cancelled",
             "currency" => "Currency",
+            "account_id" => "Account ID",
+            "account_name" => "Account Name",
+            "teams" => "Teams",
         ],
         "notification" => [
             "completed" => [

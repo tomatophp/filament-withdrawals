@@ -2,9 +2,14 @@
 
 namespace TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\RelationManagers;
 
-use Filament\Forms\Form;
+use Filament;
 use Filament\Forms;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Model;
@@ -22,39 +27,29 @@ class WithdrawalMethodFieldsRelation extends RelationManager
         return trans('filament-withdrawals::messages.forms.fields.title');
     }
 
-    /**
-     * @return string|null
-     */
     public static function getLabel(): ?string
     {
         return trans('filament-withdrawals::messages.forms.fields.title');
     }
 
-    /**
-     * @return string|null
-     */
     public static function getModelLabel(): ?string
     {
         return trans('filament-withdrawals::messages.forms.fields.single');
     }
 
-
-    /**
-     * @return string|null
-     */
     public static function getPluralLabel(): ?string
     {
         return trans('filament-withdrawals::messages.forms.fields.title');
     }
 
-
-    public function form(Form $form): Form
+    public function form(Schema $form): Schema
     {
         return $form
             ->schema([
-                Forms\Components\Tabs::make()
+                Tabs::make()
+                    ->columnSpanFull()
                     ->schema([
-                        Forms\Components\Tabs\Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.general'))
+                        Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.general'))
                             ->icon('heroicon-s-information-circle')
                             ->schema([
                                 Forms\Components\Select::make('type')
@@ -65,7 +60,7 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                 Forms\Components\TextInput::make('name')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.name'))
                                     ->live()
-                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state) {
+                                    ->afterStateUpdated(function (Get $get, Set $set, $state) {
                                         if (str($state)->contains('email')) {
                                             $set('type', 'email');
                                         }
@@ -99,7 +94,7 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                 Forms\Components\TextInput::make('default')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.default')),
                             ])->columns(2),
-                        Forms\Components\Tabs\Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.relation'))
+                        Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.relation'))
                             ->icon('heroicon-s-squares-plus')
                             ->schema([
                                 Forms\Components\Toggle::make('is_relation')
@@ -108,14 +103,14 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                     ->live(),
                                 Forms\Components\TextInput::make('relation_name')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.relation_name'))
-                                    ->hidden(fn (Forms\Get $get) => !$get('is_relation'))
+                                    ->hidden(fn (Get $get) => !$get('is_relation'))
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('relation_column')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.relation_column'))
-                                    ->hidden(fn (Forms\Get $get) => !$get('is_relation'))
+                                    ->hidden(fn (Get $get) => !$get('is_relation'))
                                     ->maxLength(255),
                             ])->columns(2),
-                        Forms\Components\Tabs\Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.options'))
+                        Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.options'))
                             ->icon('heroicon-s-rectangle-group')
                             ->schema([
                                 Forms\Components\Toggle::make('is_multi')
@@ -129,9 +124,9 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                         Translation::make('label')->label(trans('filament-withdrawals::messages.forms.fields.columns.label')),
                                         Forms\Components\TextInput::make('value')->label(trans('filament-withdrawals::messages.forms.fields.columns.value')),
                                     ])
-                                    ->hidden(fn (Forms\Get $get) => !$get('has_options')),
+                                    ->hidden(fn (Get $get) => !$get('has_options')),
                             ]),
-                        Forms\Components\Tabs\Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.labels'))
+                        Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.labels'))
                             ->icon('heroicon-s-language')
                             ->schema([
                                 Translation::make('label')
@@ -141,7 +136,7 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                 Translation::make('hint')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.hint')),
                             ]),
-                        Forms\Components\Tabs\Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.validation'))
+                        Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.validation'))
                             ->icon('heroicon-s-variable')
                             ->schema([
                                 Forms\Components\Toggle::make('is_required')
@@ -149,7 +144,7 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                     ->live(),
                                 Translation::make('required_message')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.required_message'))
-                                    ->hidden(fn (Forms\Get $get) => !$get('is_required')),
+                                    ->hidden(fn (Get $get) => !$get('is_required')),
                                 Forms\Components\Toggle::make('has_validation')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.has_validation'))
                                     ->live(),
@@ -159,7 +154,7 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                         Forms\Components\TextInput::make('rule')->label(trans('filament-withdrawals::messages.forms.fields.columns.rule')),
                                         Translation::make('message')->label(trans('filament-withdrawals::messages.forms.fields.columns.message')),
                                     ])
-                                    ->hidden(fn (Forms\Get $get) => !$get('has_validation')),
+                                    ->hidden(fn (Get $get) => !$get('has_validation')),
                             ])
                     ])
             ])->columns(1);
@@ -186,11 +181,11 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                     })
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->after(function (array $data, $record) {
+                Filament\Actions\EditAction::make()->after(function (array $data, $record) {
                     $record->name = Str::of($record->name)->replace(' ', '_')->lower()->toString();
                     $record->save();
                 }),
-                Tables\Actions\DeleteAction::make()
+                Filament\Actions\DeleteAction::make()
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('type')

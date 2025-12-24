@@ -20,11 +20,17 @@ return [
     "withdrawal_requests" => [
         "title" => "طلبات السحب",
         "single" => "طلب سحب",
+        "create" => "طلب سحب جديد",
+        "select" => "اختر طريقة السحب",
+        "informations" => "معلومات السحب",
         "columns" => [
             "process" => "قيد المعالجة",
             "completed" => "مكتمل",
             "cancelled" => "ملغى",
             "currency" => "العملة",
+            "account_id" => "معرف الحساب",
+            "account_name" => "اسم الحساب",
+            "teams" => "الفرق",
         ],
         "notification" => [
             "completed" => [

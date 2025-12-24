@@ -6,9 +6,10 @@ use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\Pa
 use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\RelationManagers\WithdrawalMethodFieldsRelation;
 use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\RelationManagers\WithdrawalRequestsRelation;
 use TomatoPHP\FilamentWithdrawals\Models\WithdrawalMethod;
+use Filament;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -16,7 +17,7 @@ class WithdrawalMethodResource extends Resource
 {
     protected static ?string $model = WithdrawalMethod::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-credit-card';
 
     protected static ?int $navigationSort = 4;
 
@@ -40,7 +41,7 @@ class WithdrawalMethodResource extends Resource
         return trans('filament-withdrawals::messages.withdrawal_methods.title');
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -105,11 +106,11 @@ class WithdrawalMethodResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Filament\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Filament\Actions\BulkActionGroup::make([
+                    Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->searchable();
