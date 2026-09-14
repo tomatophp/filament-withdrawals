@@ -2,9 +2,8 @@
 
 namespace TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource\Pages;
 
-use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource;
 
 class ListWithdrawalRequests extends ListRecords
 {

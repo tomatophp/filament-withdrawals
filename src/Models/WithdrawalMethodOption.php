@@ -46,19 +46,15 @@ class WithdrawalMethodOption extends Model
     ];
 
     protected $casts = [
-        'default' => "json",
-        'options' => "array",
-        'validation' => "array",
-        'lable' => "array",
-        'hint' => "array",
-        'placeholder' => "array",
-        'required_message' => "array",
-        'reactive_where' => "array",
-        'has_options' => "boolean",
-        'has_validation' => "boolean",
-        'is_required' => "boolean",
-        'is_multi' => "boolean",
-        'is_reactive' => "boolean",
-        'is_from_table' => "boolean"
+        'default' => 'json',
+        'options' => 'array',
+        'validation' => 'array',
+        'reactive_where' => 'array',
+        'has_options' => 'boolean',
+        'has_validation' => 'boolean',
+        'is_required' => 'boolean',
+        'is_multi' => 'boolean',
+        'is_reactive' => 'boolean',
+        'is_from_table' => 'boolean',
     ];
 }

@@ -14,12 +14,14 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "TomatoPHP\\FilamentWithdrawals\\": "src/"
+            "TomatoPHP\\FilamentWithdrawals\\": "src/",
+            "TomatoPHP\\FilamentWithdrawals\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "TomatoPHP\\FilamentWithdrawals\\Tests\\": "tests/src/",
+            "TomatoPHP\\FilamentWithdrawals\\Tests\\Database\\Factories\\": "tests/database/factories/"
         }
     },
     "extra": {
@@ -29,6 +31,12 @@
             ]
         }
     },
+    "scripts": {
+        "testbench": "vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "format": "vendor/bin/pint"
+    },
     "authors": [
         {
             "name": "Abdelmjid Saber",
@@ -37,8 +45,30 @@
     ],
     "require": {
         "php": "^8.2",
-        "filament/filament": "^4.0",
-        "tomatophp/filament-wallet": "^4.0",
-        "tomatophp/console-helpers": "^1.1"
-    }
+        "filament/filament": "^5.0",
+        "filament/spatie-laravel-media-library-plugin": "^5.0",
+        "spatie/laravel-translatable": "^6.0",
+        "tomatophp/console-helpers": "^1.1",
+        "tomatophp/filament-icons": "^5.0",
+        "tomatophp/filament-translation-component": "^5.0",
+        "tomatophp/filament-wallet": "^5.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.24",
+        "nunomaduro/collision": "^8.6",
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^4.0|^5.0",
+        "pestphp/pest-plugin-laravel": "^4.0|^5.0",
+        "pestphp/pest-plugin-livewire": "^4.0|^5.0",
+        "phpstan/extension-installer": "^1.4"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "version": "5.0.0"
 }

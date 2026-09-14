@@ -2,9 +2,9 @@
 
 namespace TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource\Pages;
 
-use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource;
 
 class EditWithdrawalRequest extends EditRecord
 {

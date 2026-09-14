@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('withdrawal_requests', function (Blueprint $table) {
             $table->id();
 
-            //Morph
+            // Morph
             $table->string('model_type')->nullable();
             $table->unsignedBigInteger('model_id')->nullable();
 

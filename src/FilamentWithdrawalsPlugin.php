@@ -9,6 +9,8 @@ use TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalRequestResource;
 
 class FilamentWithdrawalsPlugin implements Plugin
 {
+    final public function __construct() {}
+
     public function getId(): string
     {
         return 'filament-withdrawals';
@@ -18,7 +20,7 @@ class FilamentWithdrawalsPlugin implements Plugin
     {
         $panel->resources([
             WithdrawalMethodResource::class,
-            WithdrawalRequestResource::class
+            WithdrawalRequestResource::class,
         ]);
     }
 
@@ -29,6 +31,6 @@ class FilamentWithdrawalsPlugin implements Plugin
 
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 }

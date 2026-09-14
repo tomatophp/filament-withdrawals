@@ -4,16 +4,19 @@ namespace TomatoPHP\FilamentWithdrawals\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use TomatoPHP\FilamentWithdrawals\Database\Factories\WithdrawalRequestFactory;
 
 class WithdrawalRequest extends Model implements HasMedia
 {
+    /** @use HasFactory<WithdrawalRequestFactory> */
+    use HasFactory;
+
     use InteractsWithMedia;
 
-    /**
-     * @var array
-     */
     protected $fillable = [
         'withdrawal_method_id',
         'model_type',
@@ -27,26 +30,25 @@ class WithdrawalRequest extends Model implements HasMedia
         'status',
         'payload',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $casts = [
-        "payload" => "array"
+        'payload' => 'array',
     ];
 
-    /**
-     * @return MorphTo
-     */
-    public function model(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function model(): MorphTo
     {
         return $this->morphTo('model');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function form()
+    public function form(): BelongsTo
     {
         return $this->belongsTo(WithdrawalMethod::class, 'withdrawal_method_id', 'id');
+    }
+
+    protected static function newFactory(): WithdrawalRequestFactory
+    {
+        return WithdrawalRequestFactory::new();
     }
 }

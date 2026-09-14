@@ -2,7 +2,7 @@
 
 namespace TomatoPHP\FilamentWithdrawals\Filament\Resources\WithdrawalMethodResource\RelationManagers;
 
-use Filament;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Tabs;
@@ -10,13 +10,14 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Filament\Tables\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use TomatoPHP\FilamentTranslationComponent\Components\Translation;
+use TomatoPHP\FilamentWithdrawals\Models\WithdrawalMethodOption;
 use TomatoPHP\FilamentWithdrawals\Services\FilamentWithdrawalFormBuilder;
 use TomatoPHP\FilamentWithdrawals\Services\FilamentWithdrawalFormFields;
-use TomatoPHP\FilamentTranslationComponent\Components\Translation;
 
 class WithdrawalMethodFieldsRelation extends RelationManager
 {
@@ -42,10 +43,10 @@ class WithdrawalMethodFieldsRelation extends RelationManager
         return trans('filament-withdrawals::messages.forms.fields.title');
     }
 
-    public function form(Schema $form): Schema
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make()
                     ->columnSpanFull()
                     ->schema([
@@ -59,31 +60,10 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                     ->default('text'),
                                 Forms\Components\TextInput::make('name')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.name'))
-                                    ->live()
-                                    ->afterStateUpdated(function (Get $get, Set $set, $state) {
-                                        if (str($state)->contains('email')) {
-                                            $set('type', 'email');
-                                        }
-                                        if (str($state)->contains('phone')) {
-                                            $set('type', 'tel');
-                                        }
-                                        if (str($state)->contains(['is_', 'has_'])) {
-                                            $set('type', 'toggle');
-                                        }
-                                        if (str($state)->contains(['at', 'date'])) {
-                                            $set('type', 'date');
-                                        }
-                                        if (str($state)->contains('password')) {
-                                            $set('type', 'password');
-                                        }
-                                        if (str($state)->contains(['description', 'message'])) {
-                                            $set('type', 'textarea');
-                                        }
-                                        if (str($state)->contains(['body', 'about'])) {
-                                            $set('type', 'rich');
-                                        }
-                                        if (str($state)->contains('price')) {
-                                            $set('type', 'number');
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(function (Set $set, ?string $state): void {
+                                        if ($type = static::guessType((string) $state)) {
+                                            $set('type', $type);
                                         }
                                     })
                                     ->required()
@@ -103,11 +83,11 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                     ->live(),
                                 Forms\Components\TextInput::make('relation_name')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.relation_name'))
-                                    ->hidden(fn (Get $get) => !$get('is_relation'))
+                                    ->hidden(fn (Get $get): bool => ! $get('is_relation'))
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('relation_column')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.relation_column'))
-                                    ->hidden(fn (Get $get) => !$get('is_relation'))
+                                    ->hidden(fn (Get $get): bool => ! $get('is_relation'))
                                     ->maxLength(255),
                             ])->columns(2),
                         Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.options'))
@@ -124,7 +104,7 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                         Translation::make('label')->label(trans('filament-withdrawals::messages.forms.fields.columns.label')),
                                         Forms\Components\TextInput::make('value')->label(trans('filament-withdrawals::messages.forms.fields.columns.value')),
                                     ])
-                                    ->hidden(fn (Get $get) => !$get('has_options')),
+                                    ->hidden(fn (Get $get): bool => ! $get('has_options')),
                             ]),
                         Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.labels'))
                             ->icon('heroicon-s-language')
@@ -144,7 +124,7 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                     ->live(),
                                 Translation::make('required_message')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.required_message'))
-                                    ->hidden(fn (Get $get) => !$get('is_required')),
+                                    ->hidden(fn (Get $get): bool => ! $get('is_required')),
                                 Forms\Components\Toggle::make('has_validation')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.has_validation'))
                                     ->live(),
@@ -154,53 +134,72 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                         Forms\Components\TextInput::make('rule')->label(trans('filament-withdrawals::messages.forms.fields.columns.rule')),
                                         Translation::make('message')->label(trans('filament-withdrawals::messages.forms.fields.columns.message')),
                                     ])
-                                    ->hidden(fn (Get $get) => !$get('has_validation')),
-                            ])
-                    ])
+                                    ->hidden(fn (Get $get): bool => ! $get('has_validation')),
+                            ]),
+                    ]),
             ])->columns(1);
+    }
+
+    /**
+     * Suggest a field type from the field name (email, phone, is_active, created_at, ...).
+     */
+    public static function guessType(string $name): ?string
+    {
+        $name = Str::lower($name);
+
+        return match (true) {
+            str_contains($name, 'email') => 'email',
+            str_contains($name, 'phone') => 'tel',
+            str_contains($name, 'password') => 'password',
+            str_starts_with($name, 'is_') || str_starts_with($name, 'has_') => 'toggle',
+            str_ends_with($name, '_at') || str_contains($name, 'date') => 'date',
+            str_contains($name, 'description') || str_contains($name, 'message') => 'textarea',
+            str_contains($name, 'body') || str_contains($name, 'about') => 'rich',
+            str_contains($name, 'price') || str_contains($name, 'amount') => 'number',
+            default => null,
+        };
+    }
+
+    public static function normalizeName(WithdrawalMethodOption $record): void
+    {
+        $record->name = Str::of($record->name)->replace(' ', '_')->lower()->toString();
+        $record->save();
     }
 
     public function table(Table $table): Table
     {
+        $type = fn (WithdrawalMethodOption $record) => FilamentWithdrawalFormFields::getOptions()->firstWhere('name', $record->type);
+
         return $table
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->icon('heroicon-s-plus-circle')
-                    ->after(function (array $data, $record) {
-                        $record->name = Str::of($record->name)->replace(' ', '_')->lower()->toString();
-                        $record->save();
-                    }),
-                Tables\Actions\Action::make('preview')
+                    ->after(fn (WithdrawalMethodOption $record) => static::normalizeName($record)),
+                Actions\Action::make('preview')
                     ->label(trans('filament-withdrawals::messages.forms.fields.actions.preview'))
                     ->icon('heroicon-s-eye')
                     ->color('info')
-                    ->form(function () {
-                        return FilamentWithdrawalFormBuilder::make($this->getOwnerRecord()->id)->build();
-                    })->action(function (array $data) {
-                        FilamentWithdrawalFormBuilder::make($this->getOwnerRecord()->id)->send($data);
-                    })
+                    ->schema(fn (): array => FilamentWithdrawalFormBuilder::make($this->getOwnerRecord()->getKey())->build())
+                    ->action(fn (array $data) => FilamentWithdrawalFormBuilder::make($this->getOwnerRecord()->getKey())->send($data)),
             ])
-            ->actions([
-                Filament\Actions\EditAction::make()->after(function (array $data, $record) {
-                    $record->name = Str::of($record->name)->replace(' ', '_')->lower()->toString();
-                    $record->save();
-                }),
-                Filament\Actions\DeleteAction::make()
+            ->recordActions([
+                Actions\EditAction::make()
+                    ->after(fn (WithdrawalMethodOption $record) => static::normalizeName($record)),
+                Actions\DeleteAction::make(),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('type')
                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.type'))
                     ->badge()
-                    ->icon(fn ($record) => optional(FilamentWithdrawalFormFields::getOptions()->where('name', $record->type)->first())->icon)
-                    ->color(fn ($record) => optional(FilamentWithdrawalFormFields::getOptions()->where('name', $record->type)->first())->color)
-                    ->state(fn ($record) => optional(FilamentWithdrawalFormFields::getOptions()->where('name', $record->type)->first())->label)
+                    ->icon(fn (WithdrawalMethodOption $record) => $type($record)?->icon)
+                    ->color(fn (WithdrawalMethodOption $record) => $type($record)?->color ?? 'primary')
+                    ->formatStateUsing(fn (WithdrawalMethodOption $record) => $type($record)?->label ?? $record->type)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.name'))
                     ->searchable(),
                 Tables\Columns\ToggleColumn::make('is_required')
-                    ->label(trans('filament-withdrawals::messages.forms.fields.columns.is_required'))
-                    ->searchable(),
+                    ->label(trans('filament-withdrawals::messages.forms.fields.columns.is_required')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -211,11 +210,11 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->groups([
-                Tables\Grouping\Group::make('group')
+                Tables\Grouping\Group::make('group'),
             ])
-            ->defaultSort('created_at')
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+            ->defaultSort('order')
+            ->toolbarActions([
+                Actions\DeleteBulkAction::make(),
             ])
             ->reorderable('order');
     }
