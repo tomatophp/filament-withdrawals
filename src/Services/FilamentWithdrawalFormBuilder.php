@@ -5,8 +5,10 @@ namespace TomatoPHP\FilamentWithdrawals\Services;
 use Carbon\Carbon;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use TomatoPHP\FilamentWithdrawals\Models\WithdrawalMethod;
+use TomatoPHP\FilamentWithdrawals\Models\WithdrawalMethodOption;
 use TomatoPHP\FilamentWithdrawals\Models\WithdrawalRequest;
 
 class FilamentWithdrawalFormBuilder
@@ -106,12 +108,7 @@ class FilamentWithdrawalFormBuilder
                 $fieldBuild->validationMessages($messages);
             }
             if ($field->is_relation) {
-                $fieldBuild->searchable();
-                if (str($field->relation_name)->contains('\\')) {
-                    $fieldBuild->options($field->relation_name::all()->pluck($field->relation_column, 'id')->toArray());
-                } else {
-                    $fieldBuild->relationship($field->relation_name, $field->relation_column);
-                }
+                $this->applyRelation($fieldBuild, $field);
             }
 
             $schema[] = $fieldBuild;
@@ -126,6 +123,38 @@ class FilamentWithdrawalFormBuilder
             ->required();
 
         return $schema;
+    }
+
+    /**
+     * Relation fields get options only from the `filament-withdrawals.relations` allowlist; any other
+     * model, relationship or column renders the field without options and is never queried.
+     */
+    protected function applyRelation(object $fieldBuild, WithdrawalMethodOption $field): void
+    {
+        $relation = $field->relation_name;
+        $column = $field->relation_column;
+
+        if (! FilamentWithdrawalRelations::isAllowed($relation, $column) || ! method_exists($fieldBuild, 'options')) {
+            return;
+        }
+
+        if (method_exists($fieldBuild, 'searchable')) {
+            $fieldBuild->searchable();
+        }
+
+        if (FilamentWithdrawalRelations::isModelClass($relation)) {
+            $fieldBuild->options(fn (): array => FilamentWithdrawalRelations::options($relation, $column));
+
+            return;
+        }
+
+        if (method_exists($fieldBuild, 'relationship')) {
+            $fieldBuild->relationship(
+                $relation,
+                $column,
+                fn (Builder $query): Builder => FilamentWithdrawalRelations::withoutHiddenColumn($query, $column),
+            );
+        }
     }
 
     /**

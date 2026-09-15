@@ -18,6 +18,7 @@ use TomatoPHP\FilamentTranslationComponent\Components\Translation;
 use TomatoPHP\FilamentWithdrawals\Models\WithdrawalMethodOption;
 use TomatoPHP\FilamentWithdrawals\Services\FilamentWithdrawalFormBuilder;
 use TomatoPHP\FilamentWithdrawals\Services\FilamentWithdrawalFormFields;
+use TomatoPHP\FilamentWithdrawals\Services\FilamentWithdrawalRelations;
 
 class WithdrawalMethodFieldsRelation extends RelationManager
 {
@@ -81,14 +82,23 @@ class WithdrawalMethodFieldsRelation extends RelationManager
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.is_relation'))
                                     ->columnSpanFull()
                                     ->live(),
-                                Forms\Components\TextInput::make('relation_name')
+                                // Only the models / relationships and columns of the `filament-withdrawals.relations`
+                                // allowlist can be picked, and the choice is validated on the server.
+                                Forms\Components\Select::make('relation_name')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.relation_name'))
-                                    ->hidden(fn (Get $get): bool => ! $get('is_relation'))
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('relation_column')
+                                    ->helperText(trans('filament-withdrawals::messages.forms.fields.columns.relation_help'))
+                                    ->options(fn (): array => FilamentWithdrawalRelations::relationOptions())
+                                    ->in(fn (): array => array_keys(FilamentWithdrawalRelations::relationOptions()))
+                                    ->required(fn (Get $get): bool => (bool) $get('is_relation'))
+                                    ->live()
+                                    ->afterStateUpdated(fn (Set $set) => $set('relation_column', null))
+                                    ->hidden(fn (Get $get): bool => ! $get('is_relation')),
+                                Forms\Components\Select::make('relation_column')
                                     ->label(trans('filament-withdrawals::messages.forms.fields.columns.relation_column'))
-                                    ->hidden(fn (Get $get): bool => ! $get('is_relation'))
-                                    ->maxLength(255),
+                                    ->options(fn (Get $get): array => FilamentWithdrawalRelations::columnOptions($get('relation_name')))
+                                    ->in(fn (Get $get): array => array_keys(FilamentWithdrawalRelations::columnOptions($get('relation_name'))))
+                                    ->required(fn (Get $get): bool => (bool) $get('is_relation'))
+                                    ->hidden(fn (Get $get): bool => ! $get('is_relation')),
                             ])->columns(2),
                         Tab::make(trans('filament-withdrawals::messages.forms.fields.tabs.options'))
                             ->icon('heroicon-s-rectangle-group')

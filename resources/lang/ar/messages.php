@@ -89,6 +89,7 @@ return [
                 'is_relation' => 'علاقة',
                 'relation_name' => 'اسم العلاقة',
                 'relation_column' => 'عمود العلاقة',
+                'relation_help' => 'يمكن استخدام النماذج والأعمدة المدرجة في إعداد filament-withdrawals.relations فقط.',
                 'sub_form' => 'نموذج فرعي',
                 'is_multi' => 'متعدد',
                 'has_options' => 'يمتلك خيارات',

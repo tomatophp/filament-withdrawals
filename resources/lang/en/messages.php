@@ -89,6 +89,7 @@ return [
                 'is_relation' => 'Is Relation',
                 'relation_name' => 'Relation Name',
                 'relation_column' => 'Relation Column',
+                'relation_help' => 'Only the models and columns listed in the filament-withdrawals.relations config can be used.',
                 'sub_form' => 'Sub Form',
                 'is_multi' => 'Is Multi',
                 'has_options' => 'Has Options',

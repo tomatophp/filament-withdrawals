@@ -21,4 +21,16 @@ return [
     'accounts' => [
         'guard' => 'accounts',
     ],
+
+    /*
+     * Allowlist for relation fields (Select fields with "Is Relation" in a withdrawal method's fields).
+     * Keys are model classes (or relationship names), values are the columns that may be shown as options.
+     * Anything not listed renders the field without options and is never queried, and hidden model
+     * attributes (password, remember_token, ...) are never shown even when listed. Empty by default.
+     *
+     * 'relations' => [
+     *     \App\Models\Bank::class => ['name'],
+     * ],
+     */
+    'relations' => [],
 ];

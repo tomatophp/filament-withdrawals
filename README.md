@@ -95,6 +95,24 @@ return [
 ];
 ```
 
+## Relation Fields (allowlist)
+
+A select field of a withdrawal method can load its options from a model ("Is Relation" in the field editor). For security, only the models (or relationship names) and columns listed in `config/filament-withdrawals.php` can be used:
+
+```php
+'relations' => [
+    \App\Models\Bank::class => ['name'],
+    \App\Models\Country::class => ['name', 'code'],
+],
+```
+
+- the allowlist is empty by default, so relation fields render without options until you list them;
+- the field editor only offers the allowlisted models and columns, and validates the choice on the server;
+- hidden attributes of a model (`password`, `remember_token`, anything in `$hidden`) are never shown, even when listed;
+- a model or column that is not listed is never queried.
+
+> Upgrading from 5.0.0: if your withdrawal methods use relation fields, add their model and column to `relations`, otherwise those fields show no options.
+
 ## Add Form Field Type
 
 you can add more fields to the form builder by use this method on your provider. Registering a type with an existing name replaces it.

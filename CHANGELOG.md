@@ -1,3 +1,8 @@
+### V5.0.1
+
+- **Security fix:** relation fields of withdrawal forms loaded any class and any column typed into the field editor (for example `App\Models\User` + `password` put the password hashes of every user into the request form, and any class name got `::all()` called on it). Relation fields now only read the models / relationships and columns listed in the new `relations` allowlist of `config/filament-withdrawals.php`, hidden model attributes (password, remember_token, ...) are never shown even when listed, and the field editor offers the allowlisted models and columns as validated selects.
+- **Upgrade note:** the allowlist is empty by default. Apps that use relation fields must add each model (or relationship) and column to `filament-withdrawals.relations`; until then those fields render without options.
+
 ### V5.0.0
 
 - Support Filament v5 and Laravel 12 / 13 (requires tomatophp/filament-wallet ^5.0)
