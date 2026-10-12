@@ -2,6 +2,12 @@
     "name": "tomatophp/filament-withdrawals",
     "type": "library",
     "description": "Manage your wallet withdrawals in FilamentPHP",
+    "homepage": "https://tomatophp.com/en/plugins/filament-withdrawals",
+    "support": {
+        "issues": "https://github.com/tomatophp/filament-withdrawals/issues",
+        "source": "https://github.com/tomatophp/filament-withdrawals",
+        "docs": "https://tomatophp.com/en/plugins/filament-withdrawals"
+    },
     "keywords": [
         "php",
         "laravel",
